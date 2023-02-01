@@ -1,0 +1,20 @@
+{
+	"name": "music-bot",
+	"main": "index.js",
+	"author": "Volve",
+	"version": "1.0.0",
+	"repository": "https://github.com/volveezz/music_bot.git",
+	"description": "Simple discord.js bot",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"body-parser": "^1.20.0",
+		"discord-player": "^5.1.0",
+		"discord.js": "^13.1.0",
+		"express": "^4.17.3",
+		"ffmpeg-static": "^4.4.0",
+		"ms": "^3.0.0-canary.1",
+		"opusscript": "^0.0.8"
+	}
+}
