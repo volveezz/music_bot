@@ -1,7 +1,7 @@
 module.exports = {
 	app: {
 		px: "$",
-		token: "NzE5MjYyNTIxNzY4MjgwMDc0.Xt03bA.f2Qo4mXKf7Wkg-8twBtTm0J0mL8",
+		token: process.env.TOKEN,
 		playing: "Введи $play < название >",
 	},
 
