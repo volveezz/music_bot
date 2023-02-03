@@ -23,7 +23,7 @@ module.exports = {
 
 		const embed = new EmbedBuilder();
 
-		embed.setColor("RED");
+		embed.setColor("Red");
 		embed.setAuthor({ name: `Результаты ${args.join(" ")}`, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }) });
 
 		const maxTracks = res.tracks.slice(0, 10);

@@ -1,6 +1,6 @@
 module.exports = {
 	name: "back",
-	aliases: ["previous"],
+	aliases: ["previous", "b"],
 	utilisation: "{prefix}back",
 	voiceChannel: true,
 

@@ -20,7 +20,7 @@ module.exports = {
 		embed.setThumbnail(track.thumbnail);
 		embed.setAuthor({ name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }) });
 
-		const methods = ["disabled", "track", "queue"];
+		const methods = ["отключен", "этот трек", "очередь"];
 
 		const timestamp = queue.getPlayerTimestamp();
 		const trackDuration = timestamp.progress == "Infinity" ? "infinity (live)" : track.duration;

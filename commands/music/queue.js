@@ -16,7 +16,7 @@ module.exports = {
 		const embed = new EmbedBuilder();
 		const methods = ["", "🔁", "🔂"];
 
-		embed.setColor("RED");
+		embed.setColor("Red");
 		embed.setThumbnail(message.guild.iconURL({ size: 2048, dynamic: true }));
 		embed.setAuthor({
 			name: `Очередь на сервере - ${message.guild.name} ${methods[queue.repeatMode]}`,

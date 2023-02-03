@@ -12,7 +12,7 @@ player.on("trackStart", (queue, track) => {
 });
 
 player.on("trackAdd", (queue, track) => {
-	queue.metadata.send(`Добавлена дорожка ${track.title} в очередь ✅`);
+	queue.metadata.send(`Добавлен трек: ${track.title} в очередь ✅`);
 });
 
 player.on("botDisconnect", (queue) => {
