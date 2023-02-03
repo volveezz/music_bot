@@ -30,7 +30,7 @@ module.exports = {
 		const songs = queue.tracks.length;
 		const nextSongs = songs > 5 ? `И еще **${songs - 5}** песен...` : `В плейлисте **${songs}** песен...`;
 
-		embed.setDescription(`Текущий ${queue.current.title}\n\n${tracks.slice(0, 5).join("\n")}\n\n${nextSongs}`);
+		embed.setDescription(`Текущий: ${queue.current.title}\n\n${tracks.slice(0, 5).join("\n")}\n\n${nextSongs}`);
 
 		embed.setTimestamp();
 		embed.setFooter({ text: "Вуф", iconURL: message.author.avatarURL({ dynamic: true }) });
