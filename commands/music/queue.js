@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 	name: "queue",
@@ -13,7 +13,7 @@ module.exports = {
 
 		if (!queue.tracks[0]) return message.channel.send(`Нет музыки в очереди после текущей, ${message.author}... повторите попытку ❌`);
 
-		const embed = new MessageEmbed();
+		const embed = new EmbedBuilder();
 		const methods = ["", "🔁", "🔂"];
 
 		embed.setColor("RED");

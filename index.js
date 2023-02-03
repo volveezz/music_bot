@@ -1,9 +1,10 @@
 const { Player } = require("discord-player");
-const { Client, Intents } = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
 const express = require("express");
 const app = express();
 const path = require("path");
 const bodyParser = require("body-parser");
+require("dotenv/config");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,7 +17,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.listen(process.env.PORT || 3000);
 
 global.client = new Client({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES],
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.MessageContent,
+	],
 	disableMentions: "everyone",
 });
 

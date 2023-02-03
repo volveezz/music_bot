@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 
 module.exports = {
 	name: "nowplaying",
@@ -14,9 +14,9 @@ module.exports = {
 
 		const track = queue.current;
 
-		const embed = new MessageEmbed();
+		const embed = new EmbedBuilder();
 
-		embed.setColor("RED");
+		embed.setColor("Red");
 		embed.setThumbnail(track.thumbnail);
 		embed.setAuthor({ name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }) });
 
@@ -34,13 +34,13 @@ module.exports = {
 		embed.setTimestamp();
 		embed.setFooter({ text: "Вуф", iconURL: message.author.avatarURL({ dynamic: true }) });
 
-		const saveButton = new MessageButton();
+		const saveButton = new ButtonBuilder();
 
 		saveButton.setLabel("Сохраните этот трек");
 		saveButton.setCustomId("saveTrack");
-		saveButton.setStyle("SUCCESS");
+		saveButton.setStyle(ButtonStyle.Success);
 
-		const row = new MessageActionRow().addComponents(saveButton);
+		const row = new ActionRowBuilder().addComponents(saveButton);
 
 		message.channel.send({ embeds: [embed], components: [row] });
 	},

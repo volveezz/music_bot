@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { QueryType } = require("discord-player");
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
 			metadata: message.channel,
 		});
 
-		const embed = new MessageEmbed();
+		const embed = new EmbedBuilder();
 
 		embed.setColor("RED");
 		embed.setAuthor({ name: `Результаты ${args.join(" ")}`, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }) });

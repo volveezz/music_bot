@@ -26,3 +26,18 @@ player.on("channelEmpty", (queue) => {
 player.on("queueEnd", (queue) => {
 	queue.metadata.send("Воспроизведение всей очереди завершено ✅");
 });
+
+client.rest.on("rateLimited", (rateLimit) => {
+	console.error(
+		`Ratelimited for ${rateLimit.timeToReset} ms, route: ${rateLimit.route}${
+			rateLimit.majorParameter ? `, parameter: ${rateLimit.majorParameter}` : ""
+		}`
+	);
+});
+
+process.on("uncaughtException", (error, origin) => {
+	console.error(`uncaughtException at top level`, origin === "uncaughtException" ? error : origin);
+});
+process.on("unhandledRejection", (error, a) => {
+	console.error(`unhandledRejection at top level`, { error });
+});

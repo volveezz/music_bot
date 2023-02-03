@@ -3,7 +3,7 @@ module.exports = (client, message) => {
 
 	const prefix = client.config.app.px;
 
-	if (message.content.indexOf(prefix) !== 0) return;
+	if (message.content.indexOf(prefix) !== 0) return console.debug("5", prefix, message.content, message.content.indexOf(prefix));
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
@@ -26,8 +26,13 @@ module.exports = (client, message) => {
 		if (!message.member.voice.channel)
 			return message.channel.send(`Вы не находитесь в голосовом канале ${message.author}... попробуйте еще раз`);
 
-		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id)
-			return message.channel.send(`Вы не находитесь в том же голосовом канале ${message.author}... повторите попытку ❌`);
+		for (const [guildId, guild] of client.guilds.cache) {
+			const voiceState = guild.voiceStates.cache.get(client.user.id);
+			if (voiceState && voiceState.channel) {
+				if (message.member.voice.channel.id !== voiceState.channel.id)
+					return message.channel.send(`Вы не находитесь в том же голосовом канале, ${message.author}... повторите попытку ❌`);
+			}
+		}
 	}
 
 	if (cmd) cmd.execute(client, message, args);
