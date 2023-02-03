@@ -24,7 +24,7 @@ module.exports = {
 		});
 
 		const tracks = queue.tracks.map(
-			(track, i) => `**${i + 1}** - ${track.title} | ${track.author} (запрошен : ${track.requestedBy.username})`
+			(track, i) => `**${i + 1}** - ${track.title} | ${track.author} (запросил: ${track.requestedBy.username})`
 		);
 
 		const songs = queue.tracks.length;

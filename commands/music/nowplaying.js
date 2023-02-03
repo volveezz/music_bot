@@ -26,7 +26,7 @@ module.exports = {
 		const trackDuration = timestamp.progress == "Infinity" ? "infinity (live)" : track.duration;
 
 		embed.setDescription(
-			`Громкость **${queue.volume}**%\nДлительность **${trackDuration}**\nРежим повтора **${methods[queue.repeatMode]}**\nЗапрошено ${
+			`Громкость **${queue.volume}**%\nДлительность **${trackDuration}**\nРежим повтора **${methods[queue.repeatMode]}**\nЗапросил: ${
 				track.requestedBy
 			}`
 		);
