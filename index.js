@@ -4,13 +4,13 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const bodyParser = require("body-parser");
-require("dotenv/config");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/callback", (req, res) => {
-	res.status(200).end();
+	res.send(`<script>location.replace('./gut.html');</script>`);
+	res.end();
 });
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -20,11 +20,9 @@ global.client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.GuildVoiceStates,
 		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildVoiceStates,
 	],
-	disableMentions: "everyone",
 });
 
 client.config = require("./config");
