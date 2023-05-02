@@ -36,8 +36,8 @@ client.rest.on("rateLimited", (rateLimit) => {
 });
 
 process.on("uncaughtException", (error, origin) => {
-	console.error(`uncaughtException at top level`, origin === "uncaughtException" ? error : origin);
+	console.error("uncaughtException at top level", origin === "uncaughtException" ? error : origin);
 });
 process.on("unhandledRejection", (error, a) => {
-	console.error(`unhandledRejection at top level`, { error });
+	console.error("unhandledRejection at top level", { error });
 });

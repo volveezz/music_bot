@@ -5,7 +5,7 @@ client.commands = new Collection();
 
 const events = readdirSync("./events/").filter((file) => file.endsWith(".js"));
 
-console.log(`Loading events...`);
+console.log("Loading events...");
 
 for (const file of events) {
 	const event = require(`../events/${file}`);
@@ -14,7 +14,7 @@ for (const file of events) {
 	delete require.cache[require.resolve(`../events/${file}`)];
 }
 
-console.log(`Loading commands...`);
+console.log("Loading commands...");
 
 readdirSync("./commands/").forEach((dirs) => {
 	const commands = readdirSync(`./commands/${dirs}`).filter((files) => files.endsWith(".js"));
