@@ -35,6 +35,16 @@ export default new Command({
         },
         {
             type: ApplicationCommandOptionType.Subcommand,
+            name: "loop",
+            nameLocalizations: { "en-US": "loop", "en-GB": "loop", ru: "повтор" },
+            description: "Включить или выключить повтор текущей песни",
+            descriptionLocalizations: {
+                "en-US": "Toggle loop for the current song",
+                "en-GB": "Toggle loop for the current song",
+            },
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
             name: "skip",
             nameLocalizations: { "en-US": "skip", "en-GB": "skip", ru: "пропустить" },
             description: "Пропустить текущую песню",
@@ -170,6 +180,21 @@ export default new Command({
                 }
                 else {
                     return errorReply("Вы должны быть в голосовм канале");
+                }
+                break;
+            }
+            case "loop": {
+                if (musicPlayer.isPlaying()) {
+                    musicPlayer.toggleLoop();
+                    const loopStatus = musicPlayer.isLooping ? "включен" : "выключен";
+                    const embed = new EmbedBuilder()
+                        .setColor("#28A745")
+                        .setAuthor({ name: `Повтор песни ${loopStatus}`, iconURL: icons.success });
+                    await interaction.reply({ embeds: [embed], ephemeral: true });
+                }
+                else {
+                    const embed = new EmbedBuilder().setColor("#0077C9").setAuthor({ name: "Нет песен для повтора", iconURL: icons.notify });
+                    await interaction.reply({ embeds: [embed], ephemeral: true });
                 }
                 break;
             }

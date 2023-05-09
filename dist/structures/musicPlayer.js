@@ -6,8 +6,12 @@ class MusicPlayer {
     queue = [];
     playing = false;
     defaultVolume = 0.2;
+    isLooping = false;
     idleTimeout = null;
     idleTimeoutDuration = 90000;
+    toggleLoop() {
+        this.isLooping = !this.isLooping;
+    }
     async joinChannel(channel) {
         try {
             this.connection = joinVoiceChannel({
@@ -57,10 +61,17 @@ class MusicPlayer {
     async playNext() {
         if (!this.connection || this.queue.length === 0) {
             this.playing = false;
+            this.disconnectIfIdle();
             return;
         }
         this.playing = true;
-        const nextSong = this.queue.shift();
+        let nextSong;
+        if (!this.isLooping) {
+            nextSong = this.queue.shift();
+        }
+        else {
+            nextSong = this.getCurrentSong() || this.queue.shift();
+        }
         if (!nextSong) {
             this.disconnectIfIdle();
             return;
