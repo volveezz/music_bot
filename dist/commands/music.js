@@ -18,16 +18,19 @@ export default new Command({
             name: "play",
             nameLocalizations: { "en-US": "play", "en-GB": "play", ru: "играть" },
             description: "Воспроизведение музыки по ссылке",
-            descriptionLocalizations: { "en-US": "Play music by link", "en-GB": "Play music by link" },
+            descriptionLocalizations: {
+                "en-US": "Play music using a link or a track name",
+                "en-GB": "Play music using a link or a track name",
+            },
             options: [
                 {
                     type: ApplicationCommandOptionType.String,
-                    name: "link",
-                    nameLocalizations: { "en-US": "link", "en-GB": "link", ru: "ссылка" },
-                    description: "Ссылка на музыку для воспроизведения",
+                    name: "track",
+                    nameLocalizations: { ru: "трек" },
+                    description: "Ссылка на музыку или её название для воспроизведения",
                     descriptionLocalizations: {
-                        "en-US": "Link to the music for playback",
-                        "en-GB": "Link to the music for playback",
+                        "en-US": "Link to the music or its name for playback",
+                        "en-GB": "Link to the music or its name for playback",
                     },
                     required: true,
                 },
@@ -141,7 +144,7 @@ export default new Command({
         switch (command) {
             case "play": {
                 if (memberVoiceChannel) {
-                    const musicLinkOrSearch = args.getString("link", true);
+                    const musicLinkOrSearch = args.getString("track", true);
                     const success = await musicPlayer.joinChannel(memberVoiceChannel);
                     if (!success) {
                         return errorReply("Не удалось присоединиться к голосовому каналу");

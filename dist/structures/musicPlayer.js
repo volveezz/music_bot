@@ -9,6 +9,14 @@ class MusicPlayer {
     isLooping = false;
     idleTimeout = null;
     idleTimeoutDuration = 90000;
+    constructor() {
+        this.audioPlayer.on("stateChange", (oldState, newState) => {
+            if (newState.status === AudioPlayerStatus.Idle && oldState.status === AudioPlayerStatus.Playing) {
+                this.playNext();
+            }
+        });
+        this.audioPlayer.on("error", (error) => console.error("Error playing song:", error));
+    }
     toggleLoop() {
         this.isLooping = !this.isLooping;
     }
@@ -80,12 +88,6 @@ class MusicPlayer {
         const resource = createAudioResource(stream, { inlineVolume: true, metadata: nextSong });
         resource.volume?.setVolume(this.defaultVolume);
         this.audioPlayer.play(resource);
-        this.audioPlayer.on("stateChange", (oldState, newState) => {
-            if (newState.status === "idle" && oldState.status === "playing") {
-                this.playNext();
-            }
-        });
-        this.audioPlayer.on("error", (error) => console.error("Error playing song:", error));
     }
     disconnectIfIdle() {
         if (this.idleTimeout) {
