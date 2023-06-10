@@ -78,11 +78,17 @@ class MusicPlayer {
             nextSong = this.queue.shift();
         }
         else {
-            nextSong = this.getCurrentSong() || this.queue.shift();
-        }
-        if (!nextSong) {
-            this.disconnectIfIdle();
-            return;
+            const currentSong = this.getCurrentSong();
+            if (currentSong) {
+                nextSong = currentSong;
+            }
+            else if (this.queue.length > 0) {
+                nextSong = this.queue[0];
+            }
+            else {
+                this.disconnectIfIdle();
+                return;
+            }
         }
         const stream = ytdl(nextSong.url, { filter: "audioonly", quality: "highestaudio" });
         const resource = createAudioResource(stream, { inlineVolume: true, metadata: nextSong });
