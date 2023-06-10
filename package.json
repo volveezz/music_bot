@@ -2,7 +2,7 @@
 	"name": "music-bot",
 	"main": "index.js",
 	"author": "Volve",
-	"version": "2.1.2",
+	"version": "2.1.3",
 	"type": "module",
 	"description": "Discord music bot made for Night 9 Destiny 2 clan",
 	"scripts": {

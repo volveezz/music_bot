@@ -74,21 +74,15 @@ class MusicPlayer {
         }
         this.playing = true;
         let nextSong;
-        if (!this.isLooping) {
-            nextSong = this.queue.shift();
-        }
-        else {
-            const currentSong = this.getCurrentSong();
-            if (currentSong) {
-                nextSong = currentSong;
-            }
-            else if (this.queue.length > 0) {
-                nextSong = this.queue[0];
-            }
-            else {
+        if (this.isLooping) {
+            nextSong = this.getCurrentSong() || this.queue[0];
+            if (!nextSong) {
                 this.disconnectIfIdle();
                 return;
             }
+        }
+        else {
+            nextSong = this.queue.shift();
         }
         const stream = ytdl(nextSong.url, { filter: "audioonly", quality: "highestaudio" });
         const resource = createAudioResource(stream, { inlineVolume: true, metadata: nextSong });
