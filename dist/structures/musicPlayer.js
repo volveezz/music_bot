@@ -9,6 +9,7 @@ class MusicPlayer {
     isLooping = false;
     idleTimeout = null;
     idleTimeoutDuration = 90000;
+    currentSong = null;
     constructor() {
         this.audioPlayer.on("stateChange", (oldState, newState) => {
             if (newState.status === AudioPlayerStatus.Idle && oldState.status === AudioPlayerStatus.Playing) {
@@ -75,8 +76,8 @@ class MusicPlayer {
         }
         this.playing = true;
         let nextSong = null;
-        if (this.isLooping) {
-            nextSong = this.getCurrentSong();
+        if (this.isLooping && this.currentSong) {
+            nextSong = this.currentSong;
             console.log("Looping enabled, next song:", nextSong);
         }
         if (!nextSong) {
@@ -86,6 +87,7 @@ class MusicPlayer {
                 return;
             }
             nextSong = this.queue.shift();
+            this.currentSong = nextSong;
         }
         const stream = ytdl(nextSong.url, { filter: "audioonly", quality: "highestaudio" });
         const resource = createAudioResource(stream, { inlineVolume: true, metadata: nextSong });
