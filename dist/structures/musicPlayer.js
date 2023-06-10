@@ -7,6 +7,7 @@ class MusicPlayer {
     playing = false;
     defaultVolume = 0.2;
     currentVolume = this.defaultVolume;
+    currentSong = null;
     isLooping = false;
     idleTimeout = null;
     idleTimeoutDuration = 90000;
@@ -69,15 +70,25 @@ class MusicPlayer {
         }
     }
     async playNext() {
-        if (!this.connection || this.queue.length === 0) {
+        if (!this.connection) {
             this.playing = false;
             this.disconnectIfIdle();
             return;
         }
         this.playing = true;
-        const nextSong = this.isLooping && this.queue.length > 0 ? this.queue[0] : this.queue.shift();
-        if (!nextSong)
+        let nextSong = null;
+        if (this.isLooping && this.currentSong) {
+            nextSong = this.currentSong;
+        }
+        else if (this.queue.length > 0) {
+            nextSong = this.queue.shift();
+            this.currentSong = nextSong;
+        }
+        if (!nextSong) {
+            this.playing = false;
+            this.disconnectIfIdle();
             return;
+        }
         const stream = ytdl(nextSong.url, { filter: "audioonly", quality: "highestaudio" });
         const resource = createAudioResource(stream, { inlineVolume: true });
         resource.volume?.setVolume(this.currentVolume);
