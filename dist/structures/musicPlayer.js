@@ -19,6 +19,7 @@ class MusicPlayer {
     }
     toggleLoop() {
         this.isLooping = !this.isLooping;
+        console.log("Looping status changed:", this.isLooping);
     }
     async joinChannel(channel) {
         try {
@@ -67,21 +68,23 @@ class MusicPlayer {
         }
     }
     async playNext() {
-        if (!this.connection || this.queue.length === 0) {
+        if (!this.connection) {
             this.playing = false;
             this.disconnectIfIdle();
             return;
         }
         this.playing = true;
-        let nextSong;
+        let nextSong = null;
         if (this.isLooping) {
-            nextSong = this.getCurrentSong() || this.queue[0];
-            if (!nextSong) {
+            nextSong = this.getCurrentSong();
+            console.log("Looping enabled, next song:", nextSong);
+        }
+        if (!nextSong) {
+            if (this.queue.length === 0) {
+                this.playing = false;
                 this.disconnectIfIdle();
                 return;
             }
-        }
-        else {
             nextSong = this.queue.shift();
         }
         const stream = ytdl(nextSong.url, { filter: "audioonly", quality: "highestaudio" });
