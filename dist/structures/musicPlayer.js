@@ -6,10 +6,10 @@ class MusicPlayer {
     queue = [];
     playing = false;
     defaultVolume = 0.2;
+    currentVolume = this.defaultVolume;
     isLooping = false;
     idleTimeout = null;
     idleTimeoutDuration = 90000;
-    currentSong = null;
     constructor() {
         this.audioPlayer.on("stateChange", (oldState, newState) => {
             if (newState.status === AudioPlayerStatus.Idle && oldState.status === AudioPlayerStatus.Playing) {
@@ -20,7 +20,6 @@ class MusicPlayer {
     }
     toggleLoop() {
         this.isLooping = !this.isLooping;
-        console.log("Looping status changed:", this.isLooping);
     }
     async joinChannel(channel) {
         try {
@@ -41,6 +40,7 @@ class MusicPlayer {
         if (this.connection) {
             this.connection.destroy();
             this.connection = null;
+            this.currentVolume = this.defaultVolume;
         }
     }
     async play(url) {
@@ -48,7 +48,7 @@ class MusicPlayer {
             return null;
         const info = await ytdl.getBasicInfo(url);
         const queueItem = {
-            url: url,
+            url,
             title: info.videoDetails.title,
             thumbnail: info.videoDetails.thumbnails[0].url,
         };
@@ -69,29 +69,18 @@ class MusicPlayer {
         }
     }
     async playNext() {
-        if (!this.connection) {
+        if (!this.connection || this.queue.length === 0) {
             this.playing = false;
             this.disconnectIfIdle();
             return;
         }
         this.playing = true;
-        let nextSong = null;
-        if (this.isLooping && this.currentSong) {
-            nextSong = this.currentSong;
-            console.log("Looping enabled, next song:", nextSong);
-        }
-        if (!nextSong) {
-            if (this.queue.length === 0) {
-                this.playing = false;
-                this.disconnectIfIdle();
-                return;
-            }
-            nextSong = this.queue.shift();
-            this.currentSong = nextSong;
-        }
+        const nextSong = this.isLooping && this.queue.length > 0 ? this.queue[0] : this.queue.shift();
+        if (!nextSong)
+            return;
         const stream = ytdl(nextSong.url, { filter: "audioonly", quality: "highestaudio" });
-        const resource = createAudioResource(stream, { inlineVolume: true, metadata: nextSong });
-        resource.volume?.setVolume(this.defaultVolume);
+        const resource = createAudioResource(stream, { inlineVolume: true });
+        resource.volume?.setVolume(this.currentVolume);
         this.audioPlayer.play(resource);
     }
     disconnectIfIdle() {
@@ -101,6 +90,7 @@ class MusicPlayer {
         this.idleTimeout = setTimeout(() => {
             if (!this.isPlaying()) {
                 this.connection?.disconnect();
+                this.currentVolume = this.defaultVolume;
             }
             this.idleTimeout = null;
         }, this.idleTimeoutDuration);
@@ -122,13 +112,10 @@ class MusicPlayer {
         return this.audioPlayer.state.status === AudioPlayerStatus.Playing;
     }
     setVolume(volume) {
-        if (this.audioPlayer.state.status !== "idle") {
+        this.currentVolume = volume;
+        if (this.audioPlayer.state.status !== AudioPlayerStatus.Idle) {
             const resource = this.audioPlayer.state.resource;
-            if (!resource.volume) {
-                console.error(`[Error code: 1738]`, resource);
-                return;
-            }
-            resource.volume.setVolume(volume);
+            resource.volume?.setVolume(volume);
         }
     }
     getQueue() {
