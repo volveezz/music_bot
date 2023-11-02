@@ -7,7 +7,7 @@ const guildId = process.env.GUILDID;
 export class ExtendedClient extends Client {
     commands = new Collection();
     guild;
-    activity = { name: "/музыка играть", type: ActivityType.Listening, url: undefined };
+    activity = { name: "/музыка играть", type: ActivityType.Custom };
     constructor() {
         super({
             intents: [
